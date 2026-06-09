@@ -1,554 +1,181 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>STAATLICHES PORTAL</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --red: #ff1a1a;
-      --dim-red: #8b0000;
-      --green: #00ff41;
-      --dim-green: #003b00;
-      --bg: #000000;
-      --panel: #080808;
-      --border: #1a1a1a;
-      --text: #c0c0c0;
-      --white: #e8e8e8;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Startseite</title>
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
 
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Share Tech Mono', monospace;
-      min-height: 100vh;
-      overflow-x: hidden;
-      cursor: crosshair;
+        background-color: #000;
+        color: white;
+        min-height: 100vh;
     }
 
-    /* Scanlines overlay */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,0.08) 2px,
-        rgba(0,0,0,0.08) 4px
-      );
-      pointer-events: none;
-      z-index: 9999;
+    /* Popup Overlay */
+    .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.85);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
     }
 
-    /* === POPUP === */
-    #overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.92);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      backdrop-filter: blur(4px);
+    .popup {
+        background: #111;
+        border: 1px solid #444;
+        padding: 30px;
+        width: 90%;
+        max-width: 600px;
+        text-align: center;
+        border-radius: 10px;
     }
 
-    #popup {
-      background: var(--panel);
-      border: 1px solid var(--red);
-      max-width: 580px;
-      width: 90%;
-      padding: 0;
-      position: relative;
-      box-shadow: 0 0 60px rgba(255,26,26,0.3), 0 0 120px rgba(255,26,26,0.1), inset 0 0 40px rgba(255,26,26,0.03);
-      animation: popupIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    .popup h2 {
+        margin-bottom: 25px;
+        font-size: 1.2rem;
+        line-height: 1.5;
     }
 
-    @keyframes popupIn {
-      from { opacity: 0; transform: scale(0.9) translateY(20px); }
-      to { opacity: 1; transform: scale(1) translateY(0); }
+    .popup button {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+        padding: 15px;
+        border: none;
+        cursor: pointer;
+        background: #333;
+        color: white;
+        border-radius: 6px;
+        transition: 0.2s;
     }
 
-    .popup-header {
-      background: var(--red);
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .popup button:hover {
+        background: #555;
     }
 
-    .popup-header .eye-icon {
-      font-size: 18px;
-      animation: blink 3s infinite;
+    /* Hauptinhalt */
+    .container {
+        padding: 50px 20px;
     }
 
-    @keyframes blink {
-      0%, 90%, 100% { opacity: 1; }
-      95% { opacity: 0; }
+    .grid {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: wrap;
+        margin-top: 50px;
     }
 
-    .popup-header span {
-      font-family: 'Orbitron', monospace;
-      font-weight: 900;
-      font-size: 11px;
-      letter-spacing: 3px;
-      color: #000;
+    .box {
+        width: 250px;
+        height: 250px;
+        background: #1a1a1a;
+        border: 1px solid #444;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        text-decoration: none;
+        color: white;
+        font-size: 18px;
+        transition: 0.2s;
     }
 
-    .popup-body {
-      padding: 36px 32px 28px;
+    .box:hover {
+        background: #2a2a2a;
     }
 
-    .popup-body p.label {
-      font-size: 9px;
-      letter-spacing: 4px;
-      color: var(--red);
-      margin-bottom: 16px;
-      text-transform: uppercase;
+    .stats {
+        margin-top: 60px;
+        text-align: center;
+        font-size: 18px;
     }
-
-    .popup-body p.main-text {
-      font-size: 15px;
-      line-height: 1.8;
-      color: var(--white);
-      margin-bottom: 32px;
-      border-left: 2px solid var(--red);
-      padding-left: 16px;
-    }
-
-    .popup-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .btn-confirm {
-      background: transparent;
-      border: 1px solid;
-      padding: 14px 20px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 12px;
-      cursor: pointer;
-      text-align: left;
-      letter-spacing: 1px;
-      transition: all 0.2s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn-confirm::before {
-      content: '▶ ';
-      opacity: 0.5;
-    }
-
-    .btn-confirm:hover::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: currentColor;
-      opacity: 0.06;
-    }
-
-    .btn-primary {
-      border-color: var(--green);
-      color: var(--green);
-    }
-
-    .btn-primary:hover {
-      box-shadow: 0 0 16px rgba(0,255,65,0.3);
-      background: rgba(0,255,65,0.04);
-    }
-
-    .btn-secondary {
-      border-color: #444;
-      color: #666;
-    }
-
-    .btn-secondary:hover {
-      border-color: #666;
-      color: #888;
-      box-shadow: 0 0 10px rgba(100,100,100,0.2);
-    }
-
-    .popup-footer {
-      padding: 12px 32px 20px;
-      font-size: 9px;
-      color: #333;
-      letter-spacing: 2px;
-    }
-
-    /* === MAIN PAGE === */
-    #main-page {
-      display: none;
-      min-height: 100vh;
-    }
-
-    /* Top bar */
-    .top-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 32px;
-      border-bottom: 1px solid #111;
-      position: sticky;
-      top: 0;
-      background: rgba(0,0,0,0.95);
-      z-index: 100;
-      backdrop-filter: blur(8px);
-    }
-
-    .logo {
-      font-family: 'Orbitron', monospace;
-      font-weight: 900;
-      font-size: 13px;
-      letter-spacing: 4px;
-      color: var(--red);
-    }
-
-    .status-light {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 9px;
-      letter-spacing: 3px;
-      color: #444;
-    }
-
-    .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--red);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--red); }
-      50% { opacity: 0.4; box-shadow: none; }
-    }
-
-    /* Hero */
-    .hero {
-      padding: 60px 32px 40px;
-      text-align: center;
-    }
-
-    .hero h1 {
-      font-family: 'Orbitron', monospace;
-      font-size: clamp(22px, 4vw, 38px);
-      font-weight: 900;
-      letter-spacing: 6px;
-      color: var(--white);
-      margin-bottom: 10px;
-    }
-
-    .hero h1 span { color: var(--red); }
-
-    .hero p {
-      font-size: 11px;
-      letter-spacing: 3px;
-      color: #444;
-    }
-
-    /* Grid */
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px 32px 60px;
-    }
-
-    @media (max-width: 700px) {
-      .card-grid { grid-template-columns: 1fr; }
-    }
-
-    .card {
-      aspect-ratio: 1;
-      border: 1px solid #1a1a1a;
-      background: var(--panel);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      cursor: pointer;
-      transition: all 0.25s;
-      position: relative;
-      overflow: hidden;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.015));
-    }
-
-    .card:hover {
-      border-color: var(--red);
-      box-shadow: 0 0 30px rgba(255,26,26,0.15), inset 0 0 20px rgba(255,26,26,0.03);
-      transform: translateY(-2px);
-    }
-
-    .card:hover .card-icon { color: var(--red); }
-    .card:hover .card-label { color: var(--white); }
-
-    .card-icon {
-      font-size: 32px;
-      transition: color 0.25s;
-      color: #333;
-    }
-
-    .card-label {
-      font-family: 'Orbitron', monospace;
-      font-size: 10px;
-      letter-spacing: 2px;
-      color: #444;
-      text-align: center;
-      padding: 0 12px;
-      transition: color 0.25s;
-      line-height: 1.6;
-    }
-
-    .card-tag {
-      font-size: 8px;
-      letter-spacing: 3px;
-      color: #2a2a2a;
-      text-transform: uppercase;
-    }
-
-    .card:hover .card-tag { color: var(--dim-red); }
-
-    /* === BEHAVIOR LOG === */
-    .log-section {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 32px 60px;
-    }
-
-    .log-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #111;
-    }
-
-    .log-header h2 {
-      font-family: 'Orbitron', monospace;
-      font-size: 10px;
-      letter-spacing: 4px;
-      color: var(--red);
-    }
-
-    .log-header .count {
-      background: var(--red);
-      color: #000;
-      font-size: 8px;
-      letter-spacing: 2px;
-      padding: 2px 8px;
-      font-family: 'Orbitron', monospace;
-    }
-
-    #behavior-log {
-      max-height: 220px;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: #1a1a1a transparent;
-    }
-
-    .log-entry {
-      display: grid;
-      grid-template-columns: 120px 1fr auto;
-      gap: 12px;
-      padding: 7px 0;
-      border-bottom: 1px solid #0d0d0d;
-      font-size: 10px;
-      animation: logIn 0.3s ease;
-    }
-
-    @keyframes logIn {
-      from { opacity: 0; transform: translateX(-8px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-
-    .log-time { color: #333; }
-    .log-action { color: #555; }
-    .log-choice { color: var(--green); font-size: 9px; }
-    .log-choice.forced { color: #555; }
-
-    .divider {
-      max-width: 900px;
-      margin: 0 auto 40px;
-      padding: 0 32px;
-      border: none;
-      border-top: 1px solid #0f0f0f;
-    }
-  </style>
+</style>
 </head>
 <body>
 
-<!-- POPUP -->
-<div id="overlay">
-  <div id="popup">
-    <div class="popup-header">
-      <span class="eye-icon">👁</span>
-      <span>PFLICHTMITTEILUNG — STAATLICHE ÜBERWACHUNG</span>
-    </div>
-    <div class="popup-body">
-      <p class="label">Kenntnisnahme erforderlich</p>
-      <p class="main-text">
-        Hiermit nehme ich zur Kenntnis, dass alles was ich tue und tuen werde staatlich überwacht wird.
-      </p>
-      <div class="popup-buttons">
-        <button class="btn-confirm btn-primary" onclick="confirm('zustimmung')">
-          Ich bestätige, da ich zustimme.
+<!-- Popup -->
+<div class="overlay" id="popupOverlay">
+    <div class="popup">
+        <h2>
+            Hiermit nehme ich zur Kenntnis, dass alles was ich tue und tun werde staatlich überwacht wird.
+        </h2>
+
+        <button onclick="confirmChoice('zustimmung')">
+            Ich bestätige, da ich zustimme.
         </button>
-        <button class="btn-confirm btn-secondary" onclick="confirm('keine-option')">
-          Ich bestätige, weil es keine andere Option gibt.
+
+        <button onclick="confirmChoice('keine_option')">
+            Ich bestätige, weil es keine andere Option gibt.
         </button>
-      </div>
     </div>
-    <div class="popup-footer">REF: §001-ÜBERWACH · ZUGRIFF WIRD PROTOKOLLIERT</div>
-  </div>
 </div>
 
-<!-- MAIN PAGE -->
-<div id="main-page">
-  <header class="top-bar">
-    <div class="logo">STAATLICHES PORTAL</div>
-    <div class="status-light">
-      <div class="dot"></div>
-      <span>ÜBERWACHUNG AKTIV</span>
+<!-- Hauptseite -->
+<div class="container">
+
+    <div class="grid">
+
+        <a href="#" class="box">
+            Link zur offiziellen Webseite
+        </a>
+
+        <a href="#" class="box">
+            Informationen erhalten
+        </a>
+
+        <a href="#" class="box">
+            Persönliche Meinung preisgeben
+        </a>
+
     </div>
-  </header>
 
-  <section class="hero">
-    <h1>WILLKOMMEN, <span>BÜRGER</span></h1>
-    <p>SIE WURDEN IDENTIFIZIERT · ZUGANG GEWÄHRT</p>
-  </section>
-
-  <div class="card-grid">
-    <!-- Card 1: Offizielle Webseite -->
-    <a class="card" href="#" onclick="logAction('Offizielle Webseite aufgerufen')" title="Offizielle Webseite">
-      <div class="card-icon">🏛️</div>
-      <div class="card-label">OFFIZIELLE<br>WEBSEITE</div>
-      <div class="card-tag">PLATZHALTER</div>
-    </a>
-
-    <!-- Card 2: Informationen -->
-    <a class="card" href="#" onclick="logAction('Informationen abgerufen')" title="Informationen">
-      <div class="card-icon">📋</div>
-      <div class="card-label">INFORMATIONEN<br>ERHALTEN</div>
-      <div class="card-tag">PLATZHALTER</div>
-    </a>
-
-    <!-- Card 3: Meinung -->
-    <a class="card" href="#" onclick="logAction('Persönliche Meinung geäußert')" title="Persönliche Meinung">
-      <div class="card-icon">📡</div>
-      <div class="card-label">PERSÖNLICHE<br>MEINUNG</div>
-      <div class="card-tag">PLATZHALTER</div>
-    </a>
-  </div>
-
-  <hr class="divider">
-
-  <!-- BEHAVIOR LOG -->
-  <section class="log-section">
-    <div class="log-header">
-      <h2>VERHALTENSPROTOKOLL</h2>
-      <span class="count" id="entry-count">0 EINTRÄGE</span>
+    <div class="stats">
+        <h3>Dokumentierte Auswahl</h3>
+        <p>Zustimmung: <span id="count1">0</span></p>
+        <p>Keine andere Option: <span id="count2">0</span></p>
     </div>
-    <div id="behavior-log">
-      <!-- entries injected here -->
-    </div>
-  </section>
+
 </div>
 
 <script>
-  const log = [];
+    function loadStats() {
+        let zustimmung =
+            parseInt(localStorage.getItem("zustimmung")) || 0;
 
-  function getTimestamp() {
-    const now = new Date();
-    return now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  }
+        let keineOption =
+            parseInt(localStorage.getItem("keine_option")) || 0;
 
-  function addLogEntry(action, choice = null) {
-    log.push({ time: getTimestamp(), action, choice });
-    renderLog();
-  }
-
-  function renderLog() {
-    const container = document.getElementById('behavior-log');
-    const count = document.getElementById('entry-count');
-    count.textContent = log.length + ' EINTR' + (log.length === 1 ? 'AG' : 'ÄGE');
-    container.innerHTML = log.slice().reverse().map(e => `
-      <div class="log-entry">
-        <span class="log-time">${e.time}</span>
-        <span class="log-action">${e.action}</span>
-        ${e.choice ? `<span class="log-choice ${e.choice === 'keine-option' ? 'forced' : ''}">${e.choice === 'zustimmung' ? 'ZUGESTIMMT' : 'GEZWUNGEN'}</span>` : '<span></span>'}
-      </div>
-    `).join('');
-  }
-
-  function confirm(choice) {
-    const label = choice === 'zustimmung'
-      ? 'Bestätigung: freiwillig zugestimmt'
-      : 'Bestätigung: keine andere Option';
-    addLogEntry(label, choice);
-
-    document.getElementById('overlay').style.display = 'none';
-    document.getElementById('main-page').style.display = 'block';
-
-    addLogEntry('Startseite geladen');
-  }
-
-  function logAction(action) {
-    addLogEntry(action);
-    event.preventDefault();
-  }
-
-  // Track mouse movement zones (throttled)
-  let lastZone = '';
-  document.addEventListener('mousemove', throttle(function(e) {
-    const x = e.clientX / window.innerWidth;
-    const y = e.clientY / window.innerHeight;
-    const zone = (x < 0.33 ? 'L' : x < 0.66 ? 'M' : 'R') + (y < 0.5 ? 'O' : 'U');
-    if (zone !== lastZone && document.getElementById('main-page').style.display === 'block') {
-      lastZone = zone;
+        document.getElementById("count1").textContent = zustimmung;
+        document.getElementById("count2").textContent = keineOption;
     }
-  }, 3000));
 
-  // Track idle
-  let idleTimer;
-  document.addEventListener('mousemove', resetIdle);
-  document.addEventListener('keydown', resetIdle);
-  function resetIdle() {
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(() => {
-      if (document.getElementById('main-page').style.display === 'block') {
-        addLogEntry('Inaktivität festgestellt (30s)');
-      }
-    }, 30000);
-  }
+    function confirmChoice(choice) {
 
-  function throttle(fn, delay) {
-    let last = 0;
-    return function(...args) {
-      const now = Date.now();
-      if (now - last >= delay) { last = now; fn(...args); }
+        let current =
+            parseInt(localStorage.getItem(choice)) || 0;
+
+        localStorage.setItem(choice, current + 1);
+
+        document.getElementById("popupOverlay").style.display = "none";
+
+        loadStats();
+    }
+
+    window.onload = function() {
+        loadStats();
     };
-  }
 </script>
+
 </body>
 </html>
