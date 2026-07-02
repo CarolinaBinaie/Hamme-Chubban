@@ -1,291 +1,373 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Anruf</title>
 
 <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
-/* Schrift */
-body {
-    background: #000;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+body{
 
-    font-family: Arial, Helvetica, sans-serif;
-}
+background:#000;
 
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 25px;
-}
+font-family:Arial,Helvetica,sans-serif;
 
-    <div class="container">
+width:100vw;
+height:100vh;
 
-    <div class="caller">
+display:flex;
 
-        <div class="number">
-            +98 912 <span class="blur">••• ••••</span>
-        </div>
-/* Anrufer */
+justify-content:center;
+align-items:center;
 
-.caller {
+overflow:hidden;
 
-    text-align: center;
-
-    margin-bottom: 40px;
+color:white;
 
 }
 
-.number {
+.container{
 
-    color: white;
+display:flex;
+flex-direction:column;
 
-    font-size: 30px;
-
-    font-weight: 300;
-
-    letter-spacing: 2px;
+align-items:center;
+justify-content:center;
 
 }
 
-.blur {
+.caller{
 
-    filter: blur(3px);
+text-align:center;
 
-    opacity: 0.85;
+margin-bottom:45px;
+
+}
+
+.number{
+
+font-size:30px;
+
+letter-spacing:2px;
+
+font-weight:300;
 
 }
 
-.country {
+.blur{
 
-    color: #8c8c8c;
+filter:blur(3px);
 
-    font-size: 14px;
-
-    margin-top: 10px;
-
-    letter-spacing: 2px;
+opacity:.85;
 
 }
-        <div class="country">
-            Iran
-        </div>
 
-    </div>
+.country{
 
-    <div class="buttons">
+margin-top:10px;
 
-        <img id="answer" class="pulse" src="annehmen.png" alt="Annehmen">
+font-size:14px;
 
-        <img id="hangup" src="auflegen.png" alt="Auflegen">
+color:#8b8b8b;
 
-    </div>
+letter-spacing:2px;
 
-    <div id="status">Bereit für Anruf</div>
-
-    <div id="timer">00:00:00</div>
-
-</div>
-
-/* Buttons */
-
-.buttons {
-    display: flex;
-    gap: 60px;
 }
 
-.buttons img {
-    width: 130px;
-    height: 130px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    user-select: none;
+.buttons{
+
+display:flex;
+
+gap:70px;
+
+margin-bottom:25px;
+
 }
 
-.buttons img:hover {
-    transform: scale(1.08);
+.buttons img{
+
+width:140px;
+
+cursor:pointer;
+
+transition:.2s;
+
+user-select:none;
+
 }
 
-.buttons img:active {
-    transform: scale(0.92);
+.buttons img:hover{
+
+transform:scale(1.07);
+
 }
 
-/* Pulsieren */
+.buttons img:active{
 
-.pulse {
-    animation: pulse 1.8s infinite;
+transform:scale(.92);
+
 }
 
-@keyframes pulse {
-    0%   { transform: scale(1);   filter: drop-shadow(0 0 0 rgba(0,255,80,0)); }
-    50%  { transform: scale(1.05); filter: drop-shadow(0 0 18px rgba(0,255,80,0.35)); }
-    100% { transform: scale(1);   filter: drop-shadow(0 0 0 rgba(0,255,80,0)); }
+.pulse{
+
+animation:pulse 1.8s infinite;
+
 }
 
-/* Text */
+@keyframes pulse{
 
-#status {
-    color: #bbb;
-    font-size: 14px;
-    text-align: center;
-    letter-spacing: 1px;
+0%{
+
+transform:scale(1);
+
 }
 
-#timer {
-    color: #e6e6e6;
-    font-size: 26px;
-    display: none;
-    letter-spacing: 2px;
+50%{
+
+transform:scale(1.05);
+
+filter:drop-shadow(0 0 20px rgba(0,255,0,.35));
+
+}
+
+100%{
+
+transform:scale(1);
+
+}
+
+}
+
+#status{
+
+font-size:14px;
+
+color:#a7a7a7;
+
+margin-top:5px;
+
+}
+
+#timer{
+
+display:none;
+
+margin-top:10px;
+
+font-size:22px;
+
+letter-spacing:2px;
+
+color:white;
+
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-    <div class="buttons">
+<div class="caller">
 
-        <img id="answer" class="pulse" src="annehmen.png" alt="Annehmen">
-        <img id="hangup" src="auflegen.png" alt="Auflegen">
+<div class="number">
 
-    </div>
-
-    <div id="status">Bereit für Anruf</div>
-    <div id="timer">00:00:00</div>
++98 912 <span class="blur">••• ••••</span>
 
 </div>
 
-<audio id="audio" src="audio.mp3"></audio>
+<div class="country">
+
+Iran
+
+</div>
+
+</div>
+
+<div class="buttons">
+
+<img
+id="answer"
+class="pulse"
+src="annehmen.png"
+alt="Annehmen">
+
+<img
+id="hangup"
+src="auflegen.png"
+alt="Auflegen">
+
+</div>
+
+<div id="status">
+
+Bereit für Anruf
+
+</div>
+
+<div id="timer">
+
+00:00:00
+
+</div>
+
+</div>
+
+<audio id="audio">
+
+<source src="audio.mp3" type="audio/mpeg">
+
+</audio>
 
 <script>
 
-const audio = document.getElementById("audio");
-const answer = document.getElementById("answer");
-const hangup = document.getElementById("hangup");
-const timerEl = document.getElementById("timer");
-const statusEl = document.getElementById("status");
+const audio=document.getElementById("audio");
 
-let duration = 0;
-let remaining = 0;
-let interval = null;
+const answer=document.getElementById("answer");
 
-/* Format */
+const hangup=document.getElementById("hangup");
 
-function format(sec) {
+const status=document.getElementById("status");
 
-    let h = Math.floor(sec / 3600);
-    let m = Math.floor((sec % 3600) / 60);
-    let s = sec % 60;
+const timer=document.getElementById("timer");
 
-    return String(h).padStart(2,'0') + ":" +
-           String(m).padStart(2,'0') + ":" +
-           String(s).padStart(2,'0');
+let duration=0;
+
+let remaining=0;
+
+let interval=null;
+
+function format(sec){
+
+let h=Math.floor(sec/3600);
+
+let m=Math.floor((sec%3600)/60);
+
+let s=sec%60;
+
+return String(h).padStart(2,"0")+":"+
+String(m).padStart(2,"0")+":"+
+String(s).padStart(2,"0");
+
 }
 
-/* Countdown */
+audio.addEventListener("loadedmetadata",()=>{
 
-function startCountdown() {
+duration=Math.floor(audio.duration);
 
-    clearInterval(interval);
+timer.innerHTML=format(duration);
 
-    remaining = Math.floor(duration);
-
-    timerEl.textContent = format(remaining);
-
-    interval = setInterval(() => {
-
-        remaining--;
-
-        if (remaining <= 0) {
-            stopCall();
-            return;
-        }
-
-        timerEl.textContent = format(remaining);
-
-    }, 1000);
-}
-
-/* START (RESET immer komplett!) */
-
-function startCall() {
-
-    clearInterval(interval);
-
-    audio.pause();
-    audio.currentTime = 0;
-
-    audio.play();
-
-    statusEl.textContent = "Laufender Anruf";
-    timerEl.style.display = "block";
-
-    startCountdown();
-
-    answer.classList.remove("pulse");
-}
-
-/* STOP */
-
-function stopCall() {
-
-    audio.pause();
-    audio.currentTime = 0;
-
-    clearInterval(interval);
-
-    timerEl.style.display = "none";
-    statusEl.textContent = "Bereit für Anruf";
-
-    answer.classList.add("pulse");
-}
-
-/* Audio Dauer auslesen */
-
-audio.addEventListener("loadedmetadata", () => {
-    duration = audio.duration;
-    timerEl.textContent = format(duration);
 });
 
-/* ANNEHMEN → immer kompletter Neustart */
+    
+function stopCall(){
 
-answer.addEventListener("click", () => {
-    setTimeout(() => {
-        startCall();
-    }, 200);
+audio.pause();
+
+audio.currentTime=0;
+
+clearInterval(interval);
+
+timer.style.display="none";
+
+status.innerHTML="Bereit für Anruf";
+
+answer.classList.add("pulse");
+
+}
+
+function startCountdown(){
+
+clearInterval(interval);
+
+remaining=duration;
+
+timer.innerHTML=format(remaining);
+
+interval=setInterval(()=>{
+
+remaining--;
+
+timer.innerHTML=format(remaining);
+
+if(remaining<=0){
+
+stopCall();
+
+}
+
+},1000);
+
+}
+
+function startCall(){
+
+clearInterval(interval);
+
+audio.pause();
+
+audio.currentTime=0;
+
+/* Anzeige */
+
+status.innerHTML="Laufender Anruf";
+
+timer.style.display="block";
+
+/* Timer immer komplett neu */
+
+startCountdown();
+
+/* Audio immer komplett neu */
+
+audio.play();
+
+answer.classList.remove("pulse");
+
+}
+
+/* Annehmen */
+
+answer.addEventListener("click",()=>{
+
+setTimeout(()=>{
+
+startCall();
+
+},200);
+
 });
 
-/* AUFLEGEN */
+/* Auflegen */
 
-hangup.addEventListener("click", () => {
-    stopCall();
+hangup.addEventListener("click",()=>{
+
+stopCall();
+
 });
 
-/* Ende Audio */
+/* Audio beendet */
 
-audio.addEventListener("ended", () => {
-    stopCall();
+audio.addEventListener("ended",()=>{
+
+stopCall();
+
 });
 
 </script>
 
 </body>
+
 </html>
