@@ -7,13 +7,15 @@
 
 <style>
 
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
 }
 
+/* Schreibmaschinenstil */
 body {
     background: #000;
     width: 100vw;
@@ -22,9 +24,9 @@ body {
     justify-content: center;
     align-items: center;
     overflow: hidden;
-}
 
-/* Layout */
+    font-family: 'Special Elite', 'Courier New', monospace;
+}
 
 .container {
     display: flex;
@@ -38,32 +40,25 @@ body {
 .buttons {
     display: flex;
     gap: 60px;
-    align-items: center;
 }
-
-/* Grundstyle */
 
 .buttons img {
     width: 130px;
     height: 130px;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease;
     user-select: none;
 }
-
-/* Hover */
 
 .buttons img:hover {
     transform: scale(1.08);
 }
 
-/* Klick-Feedback (0.2s Verzögerung Effekt) */
-
 .buttons img:active {
     transform: scale(0.92);
 }
 
-/* Pulsieren (nur grüner Button) */
+/* Pulsieren */
 
 .pulse {
     animation: pulse 1.8s infinite;
@@ -78,16 +73,17 @@ body {
 /* Text */
 
 #status {
-    color: #aaa;
-    font-size: 16px;
+    color: #bbb;
+    font-size: 18px;
     text-align: center;
+    letter-spacing: 1px;
 }
 
 #timer {
-    color: #ddd;
-    font-size: 22px;
-    letter-spacing: 1px;
+    color: #e6e6e6;
+    font-size: 26px;
     display: none;
+    letter-spacing: 2px;
 }
 
 </style>
@@ -126,6 +122,7 @@ let interval = null;
 /* Format */
 
 function format(sec) {
+
     let h = Math.floor(sec / 3600);
     let m = Math.floor((sec % 3600) / 60);
     let s = sec % 60;
@@ -135,7 +132,7 @@ function format(sec) {
            String(s).padStart(2,'0');
 }
 
-/* Timer runterzählen */
+/* Countdown */
 
 function startCountdown() {
 
@@ -159,22 +156,26 @@ function startCountdown() {
     }, 1000);
 }
 
-/* Start */
+/* START (RESET immer komplett!) */
 
 function startCall() {
 
+    clearInterval(interval);
+
+    audio.pause();
+    audio.currentTime = 0;
+
+    audio.play();
+
     statusEl.textContent = "Laufender Anruf";
     timerEl.style.display = "block";
-
-    audio.currentTime = 0;
-    audio.play();
 
     startCountdown();
 
     answer.classList.remove("pulse");
 }
 
-/* Stop */
+/* STOP */
 
 function stopCall() {
 
@@ -189,21 +190,19 @@ function stopCall() {
     answer.classList.add("pulse");
 }
 
-/* AUDIO LOADED -> Dauer auslesen */
+/* Audio Dauer auslesen */
 
 audio.addEventListener("loadedmetadata", () => {
     duration = audio.duration;
     timerEl.textContent = format(duration);
 });
 
-/* ANNEHMEN (mit 0.2s Delay) */
+/* ANNEHMEN → immer kompletter Neustart */
 
 answer.addEventListener("click", () => {
-
     setTimeout(() => {
         startCall();
     }, 200);
-
 });
 
 /* AUFLEGEN */
@@ -212,7 +211,7 @@ hangup.addEventListener("click", () => {
     stopCall();
 });
 
-/* wenn Audio endet */
+/* Ende Audio */
 
 audio.addEventListener("ended", () => {
     stopCall();
