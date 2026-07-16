@@ -1,6 +1,41 @@
 <!DOCTYPE html>
 <html lang="de">
 
+const fullscreen =
+document.getElementById("fullscreen");
+
+fullscreen.addEventListener("click",()=>{
+
+    if(!document.fullscreenElement){
+
+        document.documentElement.requestFullscreen();
+
+        fullscreen.innerHTML="✕";
+
+    }else{
+
+        document.exitFullscreen();
+
+        fullscreen.innerHTML="⛶";
+
+    }
+
+});
+
+document.addEventListener("fullscreenchange",()=>{
+
+    if(document.fullscreenElement){
+
+        fullscreen.innerHTML="✕";
+
+    }else{
+
+        fullscreen.innerHTML="⛶";
+
+    }
+
+});
+    
 <head>
 
 <meta charset="UTF-8">
