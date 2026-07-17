@@ -173,12 +173,54 @@ color:white;
 
 }
 
+    #fullscreen{
+
+position:fixed;
+
+top:20px;
+right:20px;
+
+width:46px;
+height:46px;
+
+background:rgba(255,255,255,.08);
+
+border:1px solid rgba(255,255,255,.18);
+
+border-radius:8px;
+
+color:white;
+
+font-size:24px;
+
+cursor:pointer;
+
+transition:.2s;
+
+}
+
+#fullscreen:hover{
+
+background:rgba(255,255,255,.15);
+
+transform:scale(1.08);
+
+}
+
+#fullscreen:active{
+
+transform:scale(.94);
+
+}
+
 </style>
 
 </head>
 
 <body>
-
+    
+<button id="fullscreen" title="Vollbild">⛶</button>
+    
 <div class="container">
 
 <div class="caller">
@@ -364,6 +406,36 @@ stopCall();
 audio.addEventListener("ended",()=>{
 
 stopCall();
+
+});
+
+    const fullscreen = document.getElementById("fullscreen");
+
+fullscreen.addEventListener("click",()=>{
+
+    if(!document.fullscreenElement){
+
+        document.documentElement.requestFullscreen();
+
+    }else{
+
+        document.exitFullscreen();
+
+    }
+
+});
+
+document.addEventListener("fullscreenchange",()=>{
+
+    if(document.fullscreenElement){
+
+        fullscreen.innerHTML="✕";
+
+    }else{
+
+        fullscreen.innerHTML="⛶";
+
+    }
 
 });
 
